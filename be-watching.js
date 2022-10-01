@@ -2,7 +2,7 @@ export class BeWatching extends EventTarget {
     #mutationObserver;
     onFor(pp) {
         const { for: f } = pp;
-        this.removeObserver();
+        this.#removeObserver();
         this.#mutationObserver = new MutationObserver(async (mutationList, observer) => {
             for (const mut of mutationList) {
                 const addedNodes = Array.from(mut.addedNodes);
@@ -25,7 +25,7 @@ export class BeWatching extends EventTarget {
         });
         this.#mutationObserver.observe(pp.proxy.self, pp);
     }
-    removeObserver() {
+    #removeObserver() {
         if (!this.#mutationObserver) {
             return;
         }
@@ -33,11 +33,13 @@ export class BeWatching extends EventTarget {
         this.#mutationObserver = undefined;
     }
     finale() {
-        this.removeObserver();
+        this.#removeObserver();
     }
 }
 export const virtualProps = ['subtree', 'attributes', 'characterData', 'childList', 'for'];
-export const doOnFor = {
-    ifAllOf: ['for'],
-    ifKeyIn: ['subtree', 'attributes', 'characterData', 'childList']
+export const actions = {
+    onFor: {
+        ifAllOf: ['for'],
+        ifKeyIn: ['subtree', 'attributes', 'characterData', 'childList']
+    }
 };

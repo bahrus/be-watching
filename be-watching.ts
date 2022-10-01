@@ -6,7 +6,7 @@ export abstract class BeWatching extends EventTarget implements Actions {
     
     onFor(pp: PP): void {
         const {for: f} = pp;
-        this.removeObserver();
+        this.#removeObserver();
         this.#mutationObserver = new MutationObserver(
             async (mutationList: MutationRecord[], observer: MutationObserver) => {
                 for(const mut of mutationList){
@@ -30,7 +30,7 @@ export abstract class BeWatching extends EventTarget implements Actions {
         this.#mutationObserver.observe(pp.proxy.self!, pp);
     }
 
-    removeObserver(){
+    #removeObserver(){
         if(!this.#mutationObserver){
             return;
         }
@@ -43,13 +43,15 @@ export abstract class BeWatching extends EventTarget implements Actions {
     abstract doRemovedNode(pp: PP, node: Node): void | Promise<void>;
     
     finale(){
-        this.removeObserver();
+        this.#removeObserver();
     }
 }
 
 export const virtualProps : (keyof VirtualProps)[] = ['subtree', 'attributes', 'characterData', 'childList', 'for'];
 
-export const doOnFor : Action<Proxy> = {
-    ifAllOf: ['for'],
-    ifKeyIn:  ['subtree', 'attributes', 'characterData', 'childList']
-};
+export const actions:  Partial<{[key in keyof Actions]: Action<Proxy>}> = {
+    onFor: {
+        ifAllOf: ['for'],
+        ifKeyIn:  ['subtree', 'attributes', 'characterData', 'childList']
+    }
+}
