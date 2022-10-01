@@ -1,29 +1,12 @@
 export class BeWatching extends EventTarget {
     #mutationObserver;
-    onFor(pp) {
-        const { for: f } = pp;
+    async onBeVigilant(pp) {
         this.#removeObserver();
-        this.#mutationObserver = new MutationObserver(async (mutationList, observer) => {
-            for (const mut of mutationList) {
-                const addedNodes = Array.from(mut.addedNodes);
-                for (const node of addedNodes) {
-                    if (node instanceof Element) {
-                        if (!node.matches(f))
-                            continue;
-                        await this.doAddedNode(pp, node);
-                    }
-                }
-                const removedNodes = Array.from(mut.removedNodes);
-                for (const node of removedNodes) {
-                    if (node instanceof Element) {
-                        if (!node.matches(f))
-                            continue;
-                        await this.doRemovedNode(pp, node);
-                    }
-                }
-            }
-        });
+        const { beVigilant } = await import('./beVigilant.js');
+        this.#mutationObserver = beVigilant(pp, this);
         this.#mutationObserver.observe(pp.proxy.self, pp);
+    }
+    async doInit(pp) {
     }
     #removeObserver() {
         if (!this.#mutationObserver) {
@@ -36,10 +19,10 @@ export class BeWatching extends EventTarget {
         this.#removeObserver();
     }
 }
-export const virtualProps = ['subtree', 'attributes', 'characterData', 'childList', 'for'];
+export const virtualProps = ['subtree', 'attributes', 'characterData', 'childList', 'for', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon', 'beaconEventName'];
 export const actions = {
-    onFor: {
-        ifAllOf: ['for'],
-        ifKeyIn: ['subtree', 'attributes', 'characterData', 'childList']
+    onBeVigilant: {
+        ifAllOf: ['beVigilant'],
+        ifKeyIn: ['for', 'subtree', 'attributes', 'characterData', 'childList']
     }
 };
