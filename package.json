@@ -1,8 +1,21 @@
 {
   "name": "be-watching",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Base class for mutation based decorators / behaviors.",
+  "main": "be-watching.js",
+  "module": "be-watching.js",
+  "exports":{
+    ".": "./be-watching.js",
+    "./be-watching.js": "./be-watching.js"
+  },
+  "files": [
+    "*.*"
+  ],
+  "types": "types.d.ts",
+  "keywords": [
+    "web-components",
+    "custom-elements"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +26,7 @@
     "type": "git",
     "url": "git+https://github.com/bahrus/be-watching.git"
   },
-  "author": "",
+  "author": "Bruce B. Anderson <anderson.bruce.b@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bahrus/be-watching/issues"
