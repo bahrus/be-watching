@@ -30,7 +30,7 @@ export interface EndUserProps<T = Element> extends MutationObserverInit {
 }
 
 export interface VirtualProps<T = Element> extends EndUserProps<T>, MinimalProxy<T>{
-
+    beaconCount?: number,
 }
 
 export type Proxy = Element & VirtualProps;
@@ -43,6 +43,7 @@ export type PP = ProxyProps;
 
 export interface Actions<T = Element>{
     onBeVigilant(pp: PP): void;
+    watchForBeacon(pp: PP): void;
     doInit(pp: PP): void;
     finale(): void;
 }

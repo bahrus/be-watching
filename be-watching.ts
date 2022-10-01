@@ -13,7 +13,8 @@ export abstract class BeWatching extends EventTarget implements Actions {
     }
 
     async doInit(pp: PP){
-        
+        const {probe} = await import('./probe.js');
+        probe(pp, this);
     }
 
     #removeObserver(){
@@ -27,6 +28,14 @@ export abstract class BeWatching extends EventTarget implements Actions {
     abstract doAddedNode(pp: PP, node: Node): void | Promise<void>;
 
     abstract doRemovedNode(pp: PP, node: Node): void | Promise<void>;
+
+    watchForBeacon({beaconEventName, proxy, beWatchFul}: ProxyProps): void {
+        self.addEventListener(beaconEventName!, e => {
+            proxy.beaconCount!++;
+        }, {
+            once: !beWatchFul
+        })
+    }
     
     finale(){
         this.#removeObserver();
@@ -35,9 +44,24 @@ export abstract class BeWatching extends EventTarget implements Actions {
 
 export const virtualProps : (keyof VirtualProps)[] = ['subtree', 'attributes', 'characterData', 'childList', 'for', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon', 'beaconEventName'];
 
+const params : (keyof Proxy)[]  = ['for', 'subtree', 'attributes', 'characterData', 'childList'];
+
 export const actions:  Partial<{[key in keyof Actions]: Action<Proxy>}> = {
     onBeVigilant: {
         ifAllOf:  ['beVigilant'],
-        ifKeyIn:  ['for', 'subtree', 'attributes', 'characterData', 'childList']
+        ifKeyIn:  params
+    },
+    doInit: {
+        ifAllOf: ['doInit'],
+        ifNoneOf: ['doInitAfterBeacon'],
+        ifKeyIn: params,
+    },
+    watchForBeacon: {
+        ifAtLeastOneOf: ['doInitAfterBeacon', 'beWatchFul']
     }
+}
+
+export const defaultProps: Partial<Proxy> = {
+    beaconCount: 0,
+    beaconEventName: 'i-am-here',
 }
