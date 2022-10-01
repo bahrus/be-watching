@@ -17,9 +17,14 @@ export class BeWatching extends EventTarget {
         this.#mutationObserver.disconnect();
         this.#mutationObserver = undefined;
     }
-    watchForBeacon({ beaconEventName, proxy, beWatchFul }) {
-        self.addEventListener(beaconEventName, e => {
+    watchForBeacon(pp) {
+        const { beaconEventName, beWatchFul } = pp;
+        self.addEventListener(beaconEventName, async (e) => {
+            const { proxy, subtree, self } = pp;
             proxy.beaconCount++;
+            const { probe } = await import('./probe.js');
+            const searchFrom = beWatchFul && subtree && proxy.beaconCount > 1 ? e.target.parentElement : self;
+            probe(pp, this, searchFrom);
         }, {
             once: !beWatchFul
         });

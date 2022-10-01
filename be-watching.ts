@@ -29,9 +29,15 @@ export abstract class BeWatching extends EventTarget implements Actions {
 
     abstract doRemovedNode(pp: PP, node: Node): void | Promise<void>;
 
-    watchForBeacon({beaconEventName, proxy, beWatchFul}: ProxyProps): void {
-        self.addEventListener(beaconEventName!, e => {
+    watchForBeacon(pp:  PP): void {
+        const {beaconEventName, beWatchFul } = pp;
+        self.addEventListener(beaconEventName!, async e => {
+            const {proxy, subtree, self} = pp;
             proxy.beaconCount!++;
+            const {probe} = await import('./probe.js');
+            const searchFrom = beWatchFul && subtree && proxy.beaconCount! > 1 ? (e.target as Element).parentElement : self;
+            probe(pp, this, searchFrom);
+
         }, {
             once: !beWatchFul
         })
