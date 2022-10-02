@@ -12,7 +12,7 @@ export abstract class BeWatching extends EventTarget implements Actions {
         this.#mutationObserver.observe(pp.proxy.self!, pp);
     }
 
-    async doInit(pp: PP){
+    async onDoInit(pp: PP){
         const {probe} = await import('./probe.js');
         probe(pp, this);
     }
@@ -57,7 +57,7 @@ export const actions:  Partial<{[key in keyof Actions]: Action<Proxy>}> = {
         ifAllOf:  ['beVigilant'],
         ifKeyIn:  params
     },
-    doInit: {
+    onDoInit: {
         ifAllOf: ['doInit'],
         ifNoneOf: ['doInitAfterBeacon'],
         ifKeyIn: params,

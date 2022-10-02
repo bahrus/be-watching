@@ -44,6 +44,6 @@ export type PP = ProxyProps;
 export interface Actions<T = Element>{
     onBeVigilant(pp: PP): void;
     watchForBeacon(pp: PP): void;
-    doInit(pp: PP): void;
+    onDoInit(pp: PP): void;
     finale(): void;
 }
