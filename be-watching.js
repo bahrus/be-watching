@@ -52,7 +52,7 @@ export class BeWatching extends EventTarget {
     }
 }
 export const virtualProps = ['subtree', 'attributes', 'characterData', 'childList', 'for', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon',
-    'beaconEventName', 'target', 'targetVal'];
+    'beaconEventName', 'target', 'targetVal', 'queryInfo'];
 const params = ['queryInfo', 'subtree', 'attributes', 'characterData', 'childList'];
 export const actions = {
     onTarget: 'target',

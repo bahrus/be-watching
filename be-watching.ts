@@ -70,7 +70,7 @@ export abstract class BeWatching extends EventTarget implements Actions {
 }
 
 export const virtualProps : (keyof VirtualProps)[] = ['subtree', 'attributes', 'characterData', 'childList', 'for', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon',
- 'beaconEventName', 'target', 'targetVal'];
+ 'beaconEventName', 'target', 'targetVal', 'queryInfo'];
 
 const params : (keyof Proxy)[]  = ['queryInfo', 'subtree', 'attributes', 'characterData', 'childList'];
 
