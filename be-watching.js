@@ -60,16 +60,16 @@ export const actions = {
         ifNoneOf: ['target']
     },
     onBeVigilant: {
-        ifAllOf: ['beVigilant', 'targetVal'],
+        ifAllOf: ['beVigilant', 'targetVal', 'queryInfo'],
         ifKeyIn: params
     },
     onDoInit: {
-        ifAllOf: ['doInit', 'targetVal'],
+        ifAllOf: ['doInit', 'targetVal', 'queryInfo'],
         ifNoneOf: ['doInitAfterBeacon'],
         ifKeyIn: params,
     },
     watchForBeacon: {
-        ifAllOf: ['targetVal'],
+        ifAllOf: ['targetVal', 'queryInfo'],
         ifAtLeastOneOf: ['doInitAfterBeacon', 'beWatchFul']
     },
     createQueryInfo: 'for',
