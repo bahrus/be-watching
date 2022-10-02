@@ -7,7 +7,7 @@ export abstract class BeWatching extends EventTarget implements Actions {
     async onTarget({proxy, target, self}: PP){
         const {findRealm} = await import('trans-render/lib/findRealm.js');
         return {
-            targetVal: findRealm(self, target!)
+            targetVal: await findRealm(self, target!)
         };
     }
     onNoTarget({self}: PP){

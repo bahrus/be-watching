@@ -3,7 +3,7 @@ export class BeWatching extends EventTarget {
     async onTarget({ proxy, target, self }) {
         const { findRealm } = await import('trans-render/lib/findRealm.js');
         return {
-            targetVal: findRealm(self, target)
+            targetVal: await findRealm(self, target)
         };
     }
     onNoTarget({ self }) {
