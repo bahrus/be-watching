@@ -4,12 +4,23 @@ import {Action} from 'trans-render/lib/types';
 export abstract class BeWatching extends EventTarget implements Actions {
     #mutationObserver: MutationObserver | undefined;
     
+    async onTarget({proxy, target, self}: PP){
+        const {findRealm} = await import('trans-render/lib/findRealm.js');
+        return {
+            targetVal: findRealm(self, target!)
+        };
+    }
+    onNoTarget({self}: PP){
+        return {
+            targetVal: self
+        };
+    }
     async onBeVigilant(pp: PP) {
         
         this.#removeObserver();
         const {beVigilant} = await import('./beVigilant.js');
         this.#mutationObserver = beVigilant(pp, this);
-        this.#mutationObserver.observe(pp.proxy.self!, pp);
+        this.#mutationObserver.observe(pp.proxy.targetVal!, pp);
     }
 
     async onDoInit(pp: PP){
@@ -30,8 +41,8 @@ export abstract class BeWatching extends EventTarget implements Actions {
     abstract doRemovedNode(pp: PP, node: Node): void | Promise<void>;
 
     watchForBeacon(pp:  PP): void {
-        const {beaconEventName, beWatchFul } = pp;
-        self.addEventListener(beaconEventName!, async e => {
+        const {beaconEventName, beWatchFul, targetVal } = pp;
+        targetVal!.addEventListener(beaconEventName!, async e => {
             const {proxy, subtree, self} = pp;
             proxy.beaconCount!++;
             const {probe} = await import('./probe.js');
@@ -43,26 +54,33 @@ export abstract class BeWatching extends EventTarget implements Actions {
         })
     }
     
-    finale(){
+    finale(proxy: Proxy){
+        proxy.targetVal = undefined;
         this.#removeObserver();
+        
     }
 }
 
-export const virtualProps : (keyof VirtualProps)[] = ['subtree', 'attributes', 'characterData', 'childList', 'for', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon', 'beaconEventName'];
+export const virtualProps : (keyof VirtualProps)[] = ['subtree', 'attributes', 'characterData', 'childList', 'for', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon', 'beaconEventName', 'target', 'targetVal'];
 
 const params : (keyof Proxy)[]  = ['for', 'subtree', 'attributes', 'characterData', 'childList'];
 
-export const actions:  Partial<{[key in keyof Actions]: Action<Proxy>}> = {
+export const actions:  Partial<{[key in keyof Actions]: Action<Proxy> | keyof Proxy}> = {
+    onTarget: 'target',
+    onNoTarget:{
+        ifNoneOf: ['target']
+    },
     onBeVigilant: {
-        ifAllOf:  ['beVigilant'],
+        ifAllOf:  ['beVigilant', 'targetVal'],
         ifKeyIn:  params
     },
     onDoInit: {
-        ifAllOf: ['doInit'],
+        ifAllOf: ['doInit', 'targetVal'],
         ifNoneOf: ['doInitAfterBeacon'],
         ifKeyIn: params,
     },
     watchForBeacon: {
+        ifAllOf: ['targetVal'],
         ifAtLeastOneOf: ['doInitAfterBeacon', 'beWatchFul']
     }
 }

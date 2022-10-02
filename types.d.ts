@@ -1,4 +1,5 @@
 import {BeDecoratedProps, MinimalProxy} from 'be-decorated/types';
+import {Target} from 'trans-render/lib/types';
 
 export interface EndUserProps<T = Element> extends MutationObserverInit {
     /**
@@ -26,7 +27,9 @@ export interface EndUserProps<T = Element> extends MutationObserverInit {
      */
     beVigilant?: boolean,
 
+    target?: Target,
 
+    targetVal?: Element,
 }
 
 export interface VirtualProps<T = Element> extends EndUserProps<T>, MinimalProxy<T>{
@@ -45,5 +48,7 @@ export interface Actions<T = Element>{
     onBeVigilant(pp: PP): void;
     watchForBeacon(pp: PP): void;
     onDoInit(pp: PP): void;
-    finale(): void;
+    finale(proxy: Proxy): void;
+    onTarget(pp: PP): void;
+    onNoTarget(pp: PP): void;
 }
