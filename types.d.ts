@@ -1,5 +1,5 @@
 import {BeDecoratedProps, MinimalProxy} from 'be-decorated/types';
-import {Target} from 'trans-render/lib/types';
+import {Target, QueryInfo} from 'trans-render/lib/types';
 
 export interface EndUserProps<T = Element> extends MutationObserverInit {
     /**
@@ -30,6 +30,8 @@ export interface EndUserProps<T = Element> extends MutationObserverInit {
     target?: Target,
 
     targetVal?: Element,
+
+    queryInfo?: QueryInfo
 }
 
 export interface VirtualProps<T = Element> extends EndUserProps<T>, MinimalProxy<T>{
@@ -51,4 +53,5 @@ export interface Actions<T = Element>{
     finale(proxy: Proxy): void;
     onTarget(pp: PP): void;
     onNoTarget(pp: PP): void;
+    createQueryInfo(pp: PP): void;
 }

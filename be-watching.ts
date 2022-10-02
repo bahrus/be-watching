@@ -3,6 +3,14 @@ import {Action} from 'trans-render/lib/types';
 
 export abstract class BeWatching extends EventTarget implements Actions {
     #mutationObserver: MutationObserver | undefined;
+
+    async createQueryInfo({for: f}: PP) {
+        const {getQuery} = await import('trans-render/lib/specialKeys.js');
+        return {
+            queryInfo: getQuery(f!)
+        }
+        
+    }
     
     async onTarget({proxy, target, self}: PP){
         const {findRealm} = await import('trans-render/lib/findRealm.js');
@@ -61,9 +69,10 @@ export abstract class BeWatching extends EventTarget implements Actions {
     }
 }
 
-export const virtualProps : (keyof VirtualProps)[] = ['subtree', 'attributes', 'characterData', 'childList', 'for', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon', 'beaconEventName', 'target', 'targetVal'];
+export const virtualProps : (keyof VirtualProps)[] = ['subtree', 'attributes', 'characterData', 'childList', 'for', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon',
+ 'beaconEventName', 'target', 'targetVal'];
 
-const params : (keyof Proxy)[]  = ['for', 'subtree', 'attributes', 'characterData', 'childList'];
+const params : (keyof Proxy)[]  = ['queryInfo', 'subtree', 'attributes', 'characterData', 'childList'];
 
 export const actions:  Partial<{[key in keyof Actions]: Action<Proxy> | keyof Proxy}> = {
     onTarget: 'target',
@@ -82,7 +91,8 @@ export const actions:  Partial<{[key in keyof Actions]: Action<Proxy> | keyof Pr
     watchForBeacon: {
         ifAllOf: ['targetVal'],
         ifAtLeastOneOf: ['doInitAfterBeacon', 'beWatchFul']
-    }
+    },
+    createQueryInfo: 'for',
 }
 
 export const defaultProps: Partial<Proxy> = {
