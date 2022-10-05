@@ -4,7 +4,7 @@ import {Action} from 'trans-render/lib/types';
 export abstract class BeWatching extends EventTarget implements Actions {
     #mutationObserver: MutationObserver | undefined;
 
-    async createQueryInfo({for: f}: PP) {
+    async createQueryInfo({forAll: f}: PP) {
         const {getQuery} = await import('trans-render/lib/specialKeys.js');
         return {
             queryInfo: getQuery(f!)
@@ -69,7 +69,7 @@ export abstract class BeWatching extends EventTarget implements Actions {
     }
 }
 
-export const virtualProps : (keyof VirtualProps)[] = ['subtree', 'attributes', 'characterData', 'childList', 'for', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon',
+export const virtualProps : (keyof VirtualProps)[] = ['subtree', 'attributes', 'characterData', 'childList', 'forAll', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon',
  'beaconEventName', 'target', 'targetVal', 'queryInfo'];
 
 const params : (keyof Proxy)[]  = ['queryInfo', 'subtree', 'attributes', 'characterData', 'childList'];
@@ -92,7 +92,7 @@ export const actions:  Partial<{[key in keyof Actions]: Action<Proxy> | keyof Pr
         ifAllOf: ['targetVal', 'queryInfo'],
         ifAtLeastOneOf: ['doInitAfterBeacon', 'beWatchFul']
     },
-    createQueryInfo: 'for',
+    createQueryInfo: 'forAll',
 }
 
 export const defaultProps: Partial<Proxy> = {

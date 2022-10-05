@@ -5,7 +5,7 @@ export interface EndUserProps<T = Element> extends MutationObserverInit {
     /**
      * css selector to watch for
      */
-    for?: string,
+    forAll?: string,
     /**
      * do a css query for initial matches
      */

@@ -1,6 +1,6 @@
 export class BeWatching extends EventTarget {
     #mutationObserver;
-    async createQueryInfo({ for: f }) {
+    async createQueryInfo({ forAll: f }) {
         const { getQuery } = await import('trans-render/lib/specialKeys.js');
         return {
             queryInfo: getQuery(f)
@@ -51,7 +51,7 @@ export class BeWatching extends EventTarget {
         this.#removeObserver();
     }
 }
-export const virtualProps = ['subtree', 'attributes', 'characterData', 'childList', 'for', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon',
+export const virtualProps = ['subtree', 'attributes', 'characterData', 'childList', 'forAll', 'beVigilant', 'beWatchFul', 'doInit', 'doInitAfterBeacon',
     'beaconEventName', 'target', 'targetVal', 'queryInfo'];
 const params = ['queryInfo', 'subtree', 'attributes', 'characterData', 'childList'];
 export const actions = {
@@ -72,7 +72,7 @@ export const actions = {
         ifAllOf: ['targetVal', 'queryInfo'],
         ifAtLeastOneOf: ['doInitAfterBeacon', 'beWatchFul']
     },
-    createQueryInfo: 'for',
+    createQueryInfo: 'forAll',
 };
 export const defaultProps = {
     beaconCount: 0,
