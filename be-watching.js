@@ -57,6 +57,7 @@ const params = ['queryInfo', 'subtree', 'attributes', 'characterData', 'childLis
 export const actions = {
     onTarget: 'target',
     onNoTarget: {
+        ifAllOf: ['queryInfo'],
         ifNoneOf: ['target']
     },
     onBeVigilant: {

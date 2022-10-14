@@ -77,6 +77,7 @@ const params : (keyof Proxy)[]  = ['queryInfo', 'subtree', 'attributes', 'charac
 export const actions:  Partial<{[key in keyof Actions]: Action<Proxy> | keyof Proxy}> = {
     onTarget: 'target',
     onNoTarget:{
+        ifAllOf: ['queryInfo'],
         ifNoneOf: ['target']
     },
     onBeVigilant: {
