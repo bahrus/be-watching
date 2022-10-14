@@ -1,6 +1,6 @@
 {
   "name": "be-watching",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Base class for mutation based decorators / behaviors.",
   "main": "be-watching.js",
   "module": "be-watching.js",
