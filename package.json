@@ -20,7 +20,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "be-decorated": "0.0.190"
+    "be-decorated": "0.0.196"
   },
   "repository": {
     "type": "git",
